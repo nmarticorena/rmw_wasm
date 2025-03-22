@@ -5,6 +5,7 @@
 #include "rmw_wasm_cpp/rmw_context_impl.hpp"
 #include "rmw_wasm_cpp/rmw_types.hpp"
 
+#include "wasm_cpp/modes.hpp"
 #include "wasm_cpp/publisher.hpp"
 
 #include "rmw/rmw.h"
@@ -90,6 +91,13 @@ extern "C"
         }
 
         auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
+        if(roslibjs_enable()){
+            const char * msg_name = rmw_wasm_cpp::get_message_type_name(type_support);
+            const char * msg_namespace = rmw_wasm_cpp::get_message_namespace(type_support);
+            auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name, msg_name, msg_namespace);
+        } else{
+            auto wasm_pub = new (std::nothrow) wasm_cpp::Publisher(topic_name);
+        }
 
         rmw_wasm_pub_t * rmw_wasm_pub = new (std::nothrow) rmw_wasm_pub_t();
         rmw_wasm_pub->type_support = *type_support;
