@@ -20,11 +20,13 @@ namespace wasm_cpp
         : Participant(topic_name, "publisher")
     {
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::Publisher()");
+emscripten_out("Default Pub");
     }
 
     Publisher::Publisher(const std::string & topic_name, const std::string &msg_type, const std::string & msg_namespace)
         : Participant(topic_name, "publisher")
     {
+emscripten_out("roslibjs pub");
         RCUTILS_LOG_DEBUG_NAMED("wasm_cpp", "trace Publisher::Publisher()");
         if (roslibjs_enable()){
             std::string module_name = msg_namespace.substr(0, msg_namespace.find("__"));
